@@ -12,38 +12,42 @@ class Crawler:
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
         })
 
-    def crawl_post_links(self,path_web,payload):
-        """example of payload
-            payload = {
-                "page": 1,
-                "slug": "tin-tuc",
-                "taxonomy": "category",
-                "get": "more"
-            }
-        """
+    def crawl_post_links(self, path_web, payload):
         all_links = []
         payload = payload.copy()  
-        
+
         while True:
             response = self.session.post(path_web, data=payload)
+            
             if response.status_code == 200:
                 soup = BeautifulSoup(response.text, "html.parser")
                 
-                links = soup.find_all('a')
+                # Find all elements with 'other-item' class
+                items = soup.find_all(class_='other-item')
                 
-                for link in links:
-                    href = link.get('href') 
-                    if href: 
-                        all_links.append(href)
+                # Create list of [img, link] for each item
+                alls = []
+                for item in items:
+                    img = item.find('img', src=True)
+                    link = item.find('a', href=True)
+                    
+                    if img and link:
+                        
+                        img = self.download_image(img['src'],'imgs/')
+                        alls.append([img, link['href']])
                 
-                if 'page' in payload:
-                    payload['page'] += 1 
+                # Break condition
+                if not items:
+                    break
                 else:
-                    break  
-
+                    all_links.extend(alls)
+                
+                # Increment page
+                payload['page'] += 1
             else:
-                print(f"Lỗi! Mã trạng thái: {response.status_code}")
+                print(f"Error! Status code: {response.status_code}")
                 break  
+        
         return all_links
     
     def download_image(self, img_url, save_dir):
@@ -62,30 +66,53 @@ class Crawler:
         
     def crawl_post(self, url, my_web):
         response = self.session.get(url)
-        
+        allowed_tags = {
+            'p', 'span', 'img', 'audio', 'video', 'source', 'a', 
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'li', 'ol', 
+            'table', 'tr', 'td', 'th', 'thead', 'tbody', 'tfoot'
+        }
+        unwanted_tags = ["blog-navigation", "the-tags", "post_meta", "relation","toc-list",'entry-header','single-title']
+        name_path_images = []
+
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, "html.parser")
+            imgs = soup.find_all('img')
+            # Lấy tiêu đề
             title = soup.find('h1').text
-            content = soup.find(class_="single-post")
-            
-            imgs = content.find_all('img')
+            soup = soup.find(class_="single-post")
+
+            for tag in soup.find_all(recursive=True):
+                if tag.name and any(unwanted_class in tag.get('class', []) for unwanted_class in unwanted_tags):
+                    tag.decompose()
+
+
+            content = re.sub(r'</?article[^>]*>', '', str(soup))
+            content = re.sub(r'</?div[^>]*>', '', str(content))
+
+
             for img_tag in imgs:
                 img_url = img_tag.get('src')
-                print(img_url)
                 if img_url:
                     img_url = urljoin(url, img_url)
                     name_img = self.download_image(img_url, 'imgs/')
                     name_path_images.append(name_img)
 
-            cleaned_content = re.sub(r'\s(class|style)="[^"]*"', '', str(content))
-            cleaned_content = re.sub(r'src="/uploads/Tin-tuc/[^"]+"',  
-                                    lambda match: match.group(0).replace("/uploads/Tin-tuc/", f"https://{my_web}/wp-content/uploads/"), 
-                                    cleaned_content)
-            cleaned_content = re.sub(r'href="https://xuongmocdct.com.vn/[^"]+"',  
-                                    f"href='{my_web}'", 
-                                    cleaned_content)
-            return {"title": fr"{title}", "content": fr"{cleaned_content}"}
-        
+
+            cleaned_content = re.sub(r'\s(class|style|id)="[^"]*"', '', str(content))
+
+            cleaned_content = re.sub(
+                r'https://xuongmocdct.com.vn/',
+                lambda match: match.group(0).replace("https://xuongmocdct.com.vn", f"https://{my_web}"),
+                cleaned_content
+            )
+            cleaned_content = re.sub(
+                r'/uploads/Tin-tuc/',
+                "/wp-content/uploads/",
+                cleaned_content
+            )
+            # Trả về kết quả
+            return {"title": fr"{title}", "content": fr"{cleaned_content}","name_path_images":name_path_images}
+
     def crawl_woo_category(self,way_url,payload) -> list:
         """example of payload
             payload = {
@@ -138,17 +165,35 @@ class Crawler:
             imgs_product = soup.find(class_="picture")
             imgs_product = imgs_product.find_all('img')
             for img_link in imgs_product:
-                all_imgs.append(self.download_image(img_link.get("src"),"imgs/")) 
+                src = img_link.get("src")
+                new_src = f"https://{my_web}/wp-content/uploads/img{src}"
+
+                img_link['src'] = new_src
+
+                all_imgs.append(self.download_image(new_src, "imgs/"))
                 
             area_price = soup.find("div",class_="area_price")
             price = area_price.find("strong").text
             price = re.sub(r"[^\d]", "", price)
-            content = soup.find(id="specs")
             
-            cleaned_content = re.sub(r'\s(class|style)="[^"]*"', '', str(content))
-            cleaned_content = re.sub(r'src="/uploads/file/[^"]+"',lambda match: match.group(0).replace("/uploads/file/", f"https://{my_web}/wp-content/uploads/"),  cleaned_content)
-            cleaned_content = re.sub(r'https://xuongmocdct.com.vn/',  f"{my_web}", cleaned_content)
-            cleaned_content = re.sub(r'https://xuongmocdct.com.vn/[^"]+',  f"{my_web}", cleaned_content)
+            content = soup.find(id="specs")
+            for tag in content.find_all("img"):
+                href = tag.get('src')
+                # Replace path with just the filename, supporting multiple file extensions
+                tag['src'] = re.sub(r'^(https://xuongmocdct\.com\.vn)?(/uploads/[^/]+/)?([^/]+\.\w+)$', r'https://xuongmocdct.com.vn/wp-content/uploads/\3', href)
+            
+            
+            content = re.sub(r'</?article[^>]*>', '', str(content))
+            content = re.sub(r'</?div[^>]*>', '', str(content))
+
+            cleaned_content = re.sub(r'\s(class|style|id)="[^"]*"', '', str(content))
+
+            cleaned_content = re.sub(
+                r'https://xuongmocdct.com.vn/',
+                lambda match: match.group(0).replace("https://xuongmocdct.com.vn", f"https://{my_web}"),
+                cleaned_content
+            )
+
             return {"title":fr"{title}","category":category,'price':price,"content":cleaned_content,"all_imgs":all_imgs}
         else:
             return None
@@ -163,11 +208,13 @@ class Poster(Crawler):
         
         self.auth = (self.user_name, self.password)
 
-    def post_content(self, title, content):
+    def post_content(self, title, content,featured_media):
         post_data = {
             "title": str(title),
             "content": str(content),
-            "status": "publish"
+            "status": "publish",
+            "featured_media" : featured_media
+            
         }
         
         try:
@@ -213,10 +260,8 @@ class Woocomercy_Product:
             "type": "simple",  # Loại sản phẩm
             "regular_price": str(price),  # Giá sản phẩm (phải là chuỗi)
             "description": content,  # Nội dung
-            "categories": [{
-                "slug":"noi-that-phong-khach"
-                }],  
-            "images": img_names  # Danh sách ảnh (URL hoặc ID)
+            "categories": [{"slug": category}],  # Thể loại theo slug
+            "images": img_names  # Danh sách ảnh (URL)
         }
 
         try:
@@ -224,16 +269,21 @@ class Woocomercy_Product:
             response = requests.post(
                 self.url,
                 auth=(self.consumer_key, self.consumer_secret),  # Basic Auth
-                json=data  # Dữ liệu dưới dạng JSON
+                json=data,  # Dữ liệu dưới dạng JSON
+                headers={"Content-Type": "application/json; charset=UTF-8"}  # Đảm bảo UTF-8
             )
 
             # Kiểm tra phản hồi
             if response.status_code == 201:  # HTTP 201 Created
                 print(f"Sản phẩm '{title}' đã được tạo thành công:", response.json())
+                return response.json()
             else:
-                print(f"Lỗi khi tạo sản phẩm '{title}':", response.status_code, response.json())
+                print(f"Lỗi khi tạo sản phẩm '{title}':", response.status_code, response.text)
+                return None
         except requests.exceptions.RequestException as e:
             print(f"Đã xảy ra lỗi khi gửi yêu cầu tạo sản phẩm: {e}")
+            return None
+
 
          
 if __name__ == "__main__":
@@ -249,7 +299,7 @@ if __name__ == "__main__":
     name_posts = []
     my_web = "xuongmocdct.okmedia.vn"
     crawler = Crawler()
-    poster = Poster(r"admin", r"lj5W 4xhb mrsZ DPkv ufsy Rhif", "https://xuongmocdct.okmedia.vn/wp-json/wp/v2/posts/")
+    poster = Poster(r"admin", r"QWuX RD3k L71G Uige lvEp KhQC", "https://xuongmocdct.okmedia.vn/wp-json/wp/v2/posts/")
 
     """
     noi-that-phong-khach
@@ -260,50 +310,27 @@ if __name__ == "__main__":
     
     """wckK vx6u XWEn Ml91 Q5Ao Wg45"""
     # print(crawler.crawl_woo_category("https://xuongmocdct.com.vn/product/ajax_more_product",payload))
-    for i in crawler.crawl_woo_category("https://xuongmocdct.com.vn/product/ajax_more_product",payload):
-        product_data = crawler.crawl_product(i,my_web)
+    # for i in crawler.crawl_woo_category("https://xuongmocdct.com.vn/product/ajax_more_product",payload):
+    #     product_data = crawler.crawl_product(i,my_web)
         
     links = crawler.crawl_post_links("https://xuongmocdct.com.vn/load-more-cat-post",payload)
     
-    for link in links : 
-        Spost = crawler.crawl_post(link,"xuongmocdct.okmedia.vn")
-        name_posts.append(Spost)
+    for link in links: 
+        Spost = crawler.crawl_post(link[1],"xuongmocdct.okmedia.vn")
+        name_posts.append([Spost,link[0]])
         
-    # # #upload img
-    for img in name_path_images:
-        poster.post_image("https://xuongmocdct.okmedia.vn/wp-json/wp/v2",f"imgs/{img}")
+        
+    # upload img
+    # for imgs in name_path_images:
+    #     for img in imgs:
+    #       poster.post_image("https://xuongmocdct.okmedia.vn/wp-json/wp/v2",f"imgs/{img}")
+    # print(name_posts)
     for post in name_posts:
-        poster.post_content(post['title'],post['content'])
+        poster.post_conteznt(post[0]['title'],post[0]['content'],post[1])
+        
     
 
     
-    
-    woo_url = "https://xuongmocdct.okmedia.vn/wp-json/wc/v3/products"
-    consumer_key = "ck_de53c46af1c5443ad33fe34300ac751e6660c1c3"
-    consumer_secret = "cs_65e5e2507ff689b8ecf60dd196a8ad9068eb3d3d"
-    woocomercy = Woocomercy_Product(woo_url, consumer_key, consumer_secret)
+  
 
-
-    # payload = {
-    #     "category": "noi-that-phong-khach",
-    #     "ancestor": "noi-that-phong-khach",
-    #     "page": 1
-    # }
-    # for i in crawler.crawl_woo_category("https://xuongmocdct.com.vn/product/ajax_more_product",payload):
-    #     imgs = []
-    #     product_data = crawler.crawl_product(i,my_web)
-    #     if product_data['all_imgs'] != []:
-    #         for img in product_data["all_imgs"]:
-    #             if img != '':
-    #                 # poster.post_image("https://xuongmocdct.okmedia.vn/wp-json/wp/v2","imgs/" + img)
-    #                 imgs.append({"src":"https://xuongmocdct.okmedia.vn/wp-content/uploads/" +   img})
-    #     else:
-    #         imgs = None
-    #     woocomercy.post_product(
-    #         title=product_data["title"],
-    #         price=product_data["price"],
-    #         img_names=imgs,
-    #         category=product_data["category"],
-    #         content=product_data["content"],
-    #     )
-                    
+                        
