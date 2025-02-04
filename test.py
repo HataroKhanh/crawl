@@ -10,4 +10,4 @@ payload = {
     }
 data = Crawler.crawl_post_links("https://xuongmocdct.com.vn/load-more-cat-post",payload)
 with open('links.json',"w",encoding="utf-8") as f:
-    json.dump(f)
+    json.dump(data,f)
