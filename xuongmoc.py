@@ -326,7 +326,7 @@ if __name__ == "__main__":
     #       poster.post_image("https://xuongmocdct.okmedia.vn/wp-json/wp/v2",f"imgs/{img}")
     # print(name_posts)
     for post in name_posts:
-        poster.post_conteznt(post[0]['title'],post[0]['content'],post[1])
+        poster.post_content(post[0]['title'],post[0]['content'],post[1])
         
     
 
