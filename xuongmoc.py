@@ -146,57 +146,75 @@ class Crawler:
                 break
         return all_links
 
-    def crawl_product(self,url,my_web) -> dict: 
-        response = self.session.get(url)
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.content,"html.parser")
-            
-            title = soup.find('h1',class_="title-global").text.strip()
-            
-            category_tag = soup.find("p",class_="price_sale")
-            category_tag = soup.find("p",class_="category").find_all('a')
-            all_category = []
+    def crawl_product(self, url, my_web) -> dict:
+        try:
+            response = self.session.get(url)
+            if response.status_code != 200:
+                return None
+
+            soup = BeautifulSoup(response.content, "html.parser")
+
+            # Lấy tiêu đề sản phẩm
+            title_tag = soup.find('h1', class_="title-global")
+            title = title_tag.text.strip() if title_tag else "No Title"
+
+            # Lấy danh mục sản phẩm
+            category_elements = soup.find("p", class_="category")
+            all_category = [cat.text.strip() for cat in category_elements.find_all('a')] if category_elements else []
+
+            # Lấy hình ảnh sản phẩm
             all_imgs = []
-
-            for category in category_tag:
-                category = category.text
-                all_category.append(category)
-                
             imgs_product = soup.find(class_="picture")
-            imgs_product = imgs_product.find_all('img')
-            for img_link in imgs_product:
-                src = img_link.get("src")
-                new_src = f"https://{my_web}/wp-content/uploads/img{src}"
+            if imgs_product:
+                for img_tag in imgs_product.find_all('img'):
+                    src = img_tag.get("src")
+                    if src:
+                        new_src = f"https://{my_web}/wp-content/uploads/img{src}"
+                        img_tag['src'] = new_src
+                        all_imgs.append(self.download_image(new_src, "imgs/"))
 
-                img_link['src'] = new_src
+            # Lấy giá sản phẩm
+            price = "0"
+            area_price = soup.find("div", class_="area_price")
+            if area_price:
+                price_tag = area_price.find("strong")
+                if price_tag:
+                    price = re.sub(r"[^\d]", "", price_tag.text)
 
-                all_imgs.append(self.download_image(new_src, "imgs/"))
-                
-            area_price = soup.find("div",class_="area_price")
-            price = area_price.find("strong").text
-            price = re.sub(r"[^\d]", "", price)
-            
+            # Xử lý nội dung mô tả sản phẩm
             content = soup.find(id="specs")
-            for tag in content.find_all("img"):
-                href = tag.get('src')
-                # Replace path with just the filename, supporting multiple file extensions
-                tag['src'] = re.sub(r'^(https://xuongmocdct\.com\.vn)?(/uploads/[^/]+/)?([^/]+\.\w+)$', r'https://xuongmocdct.com.vn/wp-content/uploads/\3', href)
-            
-            
-            content = re.sub(r'</?article[^>]*>', '', str(content))
-            content = re.sub(r'</?div[^>]*>', '', str(content))
+            if content:
+                for tag in content.find_all("img"):
+                    href = tag.get('src')
+                    if href:
+                        tag['src'] = re.sub(
+                            r'^(https://xuongmocdct\.com\.vn)?(/uploads/[^/]+/)?([^/]+\.\w+)$',
+                            rf'https://{my_web}/wp-content/uploads/\3',
+                            href
+                        )
 
-            cleaned_content = re.sub(r'\s(class|style|id)="[^"]*"', '', str(content))
+                # Xóa các thẻ <article> và <div> không cần thiết
+                content = re.sub(r'</?article[^>]*>', '', str(content))
+                content = re.sub(r'</?div[^>]*>', '', str(content))
 
-            cleaned_content = re.sub(
-                r'https://xuongmocdct.com.vn/',
-                lambda match: match.group(0).replace("https://xuongmocdct.com.vn", f"https://{my_web}"),
-                cleaned_content
-            )
+                # Loại bỏ các thuộc tính class, style, id
+                cleaned_content = re.sub(r'\s(class|style|id)="[^"]*"', '', str(content))
 
-            return {"title":fr"{title}","category":category,'price':price,"content":cleaned_content,"all_imgs":all_imgs}
-        else:
-            return None
+                # Thay đổi đường dẫn trang web trong nội dung
+                cleaned_content = cleaned_content.replace("https://xuongmocdct.com.vn", f"https://{my_web}")
+            else:
+                cleaned_content = "No content available"
+        except requests.exceptions.ConnectionError:
+            return self.crawl_product(url, my_web)  # Thử lại
+
+
+        return {
+            "title": title,
+            "category": all_category,
+            "price": price,
+            "content": cleaned_content,
+            "all_imgs": all_imgs
+        }
     
 class Poster(Crawler):
     def __init__(self, user_name, password, webname):
