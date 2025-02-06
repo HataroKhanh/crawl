@@ -28,7 +28,7 @@ for category in categories:
     }
     for i in crawler.crawl_woo_category("https://xuongmocdct.com.vn/product/ajax_more_product", payload):
         imgs = []
-        product_data = crawler.crawl_product(i, my_web)
+        product_data = crawler.crawl_product(i, my_web) #'''return {"title":fr"{title}","category":category,'price':price,"content":cleaned_content,"all_imgs":all_imgs}'''
         if product_data['all_imgs'] != []:
             for img in product_data["all_imgs"]:
                 if img != '':

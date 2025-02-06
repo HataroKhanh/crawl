@@ -230,18 +230,20 @@ class Poster(Crawler):
     def post_image(self,BASE_URL,image_path):
         """Upload an image to WordPress and return the image URL."""
         url = f"{BASE_URL}/media"
-        with open(image_path, 'rb') as image_file:
-            files = {'file': image_file}
-            headers = {"Content-Disposition": f"attachment; filename={image_path}"}
-            
-            response = requests.post(url, headers=headers, files=files, auth=self.auth)
-            if response.status_code == 201:
-                print("Image uploaded successfully.")
-                return response.json()['source_url'] 
-            else:
-                print(f"Failed to upload image. Response: {response.text}")
-                return None
-
+        try:
+            with open(image_path, 'rb') as image_file:
+                files = {'file': image_file}
+                headers = {"Content-Disposition": f"attachment; filename={image_path}"}
+                
+                response = requests.post(url, headers=headers, files=files, auth=self.auth)
+                if response.status_code == 201:
+                    print("Image uploaded successfully.")
+                    return response.json()
+                else:
+                    print(f"Failed to upload image. Response: {response.text}")
+                    return None
+        except:
+            return
 class Woocomercy_Product:
     def __init__(self, url, consumer_key, consumer_secret):
         self.url = url
@@ -317,16 +319,20 @@ if __name__ == "__main__":
     
     for link in links: 
         Spost = crawler.crawl_post(link[1],"xuongmocdct.okmedia.vn")
-        name_posts.append([Spost,link[0]])
+        data_post = poster.post_image("https://xuongmocdct.okmedia.vn/wp-json/wp/v2",f"imgs/{link[0]}")
+        id_feat = data_post['id']
+        print(id_feat)
+        name_posts.append({"spost":Spost,'id_feat':id_feat})
+        name_path_images.extend(Spost['name_path_images'])
         
         
     # upload img
-    # for imgs in name_path_images:
-    #     for img in imgs:
-    #       poster.post_image("https://xuongmocdct.okmedia.vn/wp-json/wp/v2",f"imgs/{img}")
+    for imgs in set(name_path_images):
+         for img in imgs:
+           poster.post_image("https://xuongmocdct.okmedia.vn/wp-json/wp/v2",f"imgs/{img}")
     # print(name_posts)
     for post in name_posts:
-        poster.post_content(post[0]['title'],post[0]['content'],post[1])
+        poster.post_content(post['spost']['title'],post['spost']['content'],post["id_feat"])
         
     
 
