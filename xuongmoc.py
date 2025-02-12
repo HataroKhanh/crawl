@@ -11,6 +11,17 @@ class Crawler:
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
         })
+    
+    def get_random_proxy(self):
+        url = "https://www.proxy-list.download/api/v1/get?type=http"
+        try:
+            response = requests.get(url)
+            proxies = response.text.strip().split("\r\n")
+            if proxies[0]:
+                self.session.proxies = {"http": proxies[0]}
+            return proxies[0] if proxies else None
+        except requests.exceptions.RequestException:
+            return None
 
     def crawl_post_links(self, path_web, payload):
         all_links = []
@@ -28,6 +39,7 @@ class Crawler:
                 # Create list of [img, link] for each item
                 alls = []
                 for item in items:
+                    img = item.find(class_="img")
                     img = item.find('img', src=True)
                     link = item.find('a', href=True)
                     
@@ -65,7 +77,10 @@ class Crawler:
             return img_name
         
     def crawl_post(self, url, my_web):
+        self.get_random_proxy()
         response = self.session.get(url)
+
+        # print(response.text)
         allowed_tags = {
             'p', 'span', 'img', 'audio', 'video', 'source', 'a', 
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'ul', 'li', 'ol', 
@@ -76,7 +91,20 @@ class Crawler:
 
         if response.status_code == 200:
             soup = BeautifulSoup(response.content, "html.parser")
-            imgs = soup.find_all('img')
+
+            #get slug
+            slug = response.url.split('/')[-1].replace(".html",'')
+
+            meta_tag = soup.find("meta", {"property": "og:image"})
+            # Lấy giá trị content
+            if meta_tag:
+                og_image = meta_tag.get("content")
+                og_image = self.download_image(og_image, 'imgs/')
+            else:
+                og_image = None
+
+            content = soup.find(class_="the-content")
+            imgs = content.find_all('img')
             # Lấy tiêu đề
             title = soup.find('h1').text
             soup = soup.find(class_="single-post")
@@ -111,7 +139,10 @@ class Crawler:
                 cleaned_content
             )
             # Trả về kết quả
-            return {"title": fr"{title}", "content": fr"{cleaned_content}","name_path_images":name_path_images}
+            return {"title": fr"{title}", "content": fr"{cleaned_content}","name_path_images":og_image,'slug':slug}
+        else:
+            import time
+            time.sleep(5)
 
     def crawl_woo_category(self,way_url,payload) -> list:
         """example of payload
@@ -226,12 +257,13 @@ class Poster(Crawler):
         
         self.auth = (self.user_name, self.password)
 
-    def post_content(self, title, content,featured_media):
+    def post_content(self, title, content,featured_media,slug):
         post_data = {
             "title": str(title),
             "content": str(content),
             "status": "publish",
-            "featured_media" : featured_media
+            "featured_media" : featured_media,
+            "slug":slug
             
         }
         
