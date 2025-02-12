@@ -179,6 +179,7 @@ class Crawler:
 
     def crawl_product(self, url, my_web) -> dict:
         try:
+            self.get_random_proxy()
             response = self.session.get(url)
             if response.status_code != 200:
                 return None
