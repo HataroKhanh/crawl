@@ -4,6 +4,7 @@ import re
 from urllib.parse import urljoin, urlparse
 import os
 import json
+import time
 """https://xuongmocdct.com.vn/"""
 class Crawler:
     def __init__(self):
@@ -182,7 +183,8 @@ class Crawler:
             self.get_random_proxy()
             response = self.session.get(url)
             if response.status_code != 200:
-                return None
+                time.sleep(10)
+                return self.crawl_product(self, url, my_web)
 
             soup = BeautifulSoup(response.content, "html.parser")
 
@@ -200,10 +202,9 @@ class Crawler:
             if imgs_product:
                 for img_tag in imgs_product.find_all('img'):
                     src = img_tag.get("src")
-                    if src:
-                        new_src = f"https://{my_web}/wp-content/uploads/img{src}"
-                        img_tag['src'] = new_src
-                        all_imgs.append(self.download_image(new_src, "imgs/"))
+                    all_imgs.append(img_tag['src'])
+
+                        
 
             # Lấy giá sản phẩm
             price = "0"
@@ -306,14 +307,14 @@ class Woocomercy_Product:
         """
         Tạo sản phẩm mới trên WooCommerce qua API.
         """
-
         # Dữ liệu sản phẩm
+        print(category)
         data = {
             "name": title,  # Tiêu đề
             "type": "simple",  # Loại sản phẩm
             "regular_price": str(price),  # Giá sản phẩm (phải là chuỗi)
             "description": content,  # Nội dung
-            "categories": [{"slug": category}],  # Thể loại theo slug
+            "categories": category,  # Thể loại theo slug
             "images": img_names  # Danh sách ảnh (URL)
         }
 

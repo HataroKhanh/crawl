@@ -21,84 +21,155 @@ categories = [
     "noi-that-phong-bep",
     "noi-that-phong-ngu",
     "noi-that-van-phong"
-]
+]   
 
 dem = 0
-url = [
-    'https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-mau-xam-bac-blvxmdct10',
-    'https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-cong-thai-hoc-mau-hong-gvpxmdct03',
-    'https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-phong-cach-vintage-blvxmdct05',
-    'https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-chat-lieu-sang-trong-blvxmdct01',
-    'https://xuongmocdct.com.vn/noi-that-van-phong/ban-may-tinh-bang-go-blvxmdct02',
-    'https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-go-cong-nghiep-blvxmdct03',
-    'https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-hinh-chu-l-blvxmdct04',
-    'https://xuongmocdct.com.vn/noi-that-phong-khach/sofa-thu-gian-hoan-hao-cho-phong-khach-gfdct06',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/ban-trang-diem-venice-go-tu-nhien-ket-hop-guong-btfdct03',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/ban-trang-diem-diel-ket-hop-guong-btfdct04',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/tu-bep-go-cong-nghiep-phoi-mau-trang-xam-an-tuong-tbdct09',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-go-liverpool-4-ghe-bfgdct03',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-ceramic-winston-8-ghe-bfdct05',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-chan-sat-georgia-gpsdct03',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-chan-sat-cao-cap-winston-gpsdct05',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-go-value-4-ghe-bfgdct04',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-go-cao-su-value-gpgdct04',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-go-houston-gpgdct05',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-go-ket-hop-pvc-gpgdct06',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-xoay-florin-gpdct01',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-go-cao-su-liverpool-gpgdct03',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-firenze-2-ghe-bfdct05',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-24-ghe-mo-rong-picnic-bfdct01',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-2-ghe-picnic-chan-tru-bfdct02',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/bo-ban-ghe-an-stdct13-6-ghe-sang-trong-va-lich-lam',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/giuong-ngu-go-bddct09-phong-cach-rustic-tone-mau-nau-tram',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-ao-canh-lua-go-cong-nghiep-thiet-ke-thong-minh',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-ao-wddct06-canh-mo-mau-trang-chat-lieu-go-sang-trong',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/don-ban-phan-thiet-ke-hinh-oval-voi-2-chan-tru-chac-chan',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/ghe-don-phong-ngu-khung-chan-sat-dem-ngoi-em-ai',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/ban-phan-treo-tuong-tone-mau-trang-thiet-ke-hien-dai',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/don-ban-phan-phong-ngu-hinh-tru-thiet-ke-moi-la',
-    'https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-nho-xinh-kem-gia-sach',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct09-mau-trang-phong-cach-tan-co',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/giuong-ngu-boc-ni-bddct07',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct08',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/bo-ban-ghe-an-stdct11-04',
-    'https://xuongmocdct.com.vn/noi-that-phong-bep/bo-ban-ghe-an-stdct12-04',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/giuong-ngu-go-bddct06',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/giuong-ngu-boc-ni-bdct08',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct05',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct06',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct03',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct07',
-    'https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct02',
-]
+url = {
+    "noi-that-phong-khach": [
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ban-tra-doi-whcmb104-chat-lieu-thep-khong-gi",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ban-tra-go-whcmb105-thiet-ke-hinh-qua-trung",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ban-tra-thong-minh-whcmb106-thiet-ke-hinh-2-dam-may",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ban-tra-go-mat-da-whcmb107",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ban-tra-go-mat-da-whcmb108",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ban-tra-whcmb109-tao-hinh-dong-ho-cat",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ke-tivi-4-ngan-whcmb401",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ghe-sofa-goc-phong-khach-hinh-chu-l-khtts28",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ghe-sofa-goc-phong-khach-hinh-chu-l-khtts29",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ghe-sofa-goc-hinh-chu-l-khtts04",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ghe-sofa-phong-khach-hinh-chu-l-khtts05",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ghe-sofa-goc-hinh-chu-l-khtts06",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/ban-tra-dien-thong-minh-loai-rong-lon-btdct08",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/bo-2-ban-khung-kim-loai-mau-nau-btdct11",
+        "https://xuongmocdct.com.vn/noi-that-phong-khach/sofa-thu-gian-hoan-hao-cho-phong-khach-gfdct06",
+    ],
+    "noi-that-phong-bep": [
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-jena-ga-vh28",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/tu-bep-go-cong-nghiep-phoi-mau-trang-xam-an-tuong-tbdct09",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-go-liverpool-4-ghe-bfgdct03",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-ceramic-winston-8-ghe-bfdct05",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-chan-sat-georgia-gpsdct03",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-chan-sat-cao-cap-winston-gpsdct05",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-go-value-4-ghe-bfgdct04",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-go-cao-su-value-gpgdct04",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-go-houston-gpgdct05",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-go-ket-hop-pvc-gpgdct06",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-xoay-florin-gpdct01",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ghe-an-go-cao-su-liverpool-gpgdct03",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-firenze-2-ghe-bfdct05",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-24-ghe-mo-rong-picnic-bfdct01",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/ban-an-2-ghe-picnic-chan-tru-bfdct02",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/bo-ban-ghe-an-stdct13-6-ghe-sang-trong-va-lich-lam",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/bo-ban-ghe-an-stdct11-04",
+        "https://xuongmocdct.com.vn/noi-that-phong-bep/bo-ban-ghe-an-stdct12-04",
+    ],
+    "noi-that-phong-ngu": [
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-trung-bay-trang-tri-co-khung-va-chan-bang-go-ttb01",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-bep-trang-trai-3-ngan-keo-mau-trang-tt04",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-trang-tri-bang-go-voi-ke-luu-tru-mo-2-tang-ttt06",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-trang-tri-hoa-van-3d-mau-nau-ttt02",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-trang-tri-hoa-tiet-cua-may-tu-nhien-ttt03",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-trang-tri-3-cua-kinh-hinh-o-van-mau-trang-tt05",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-trang-tri-mau-trang-co-ngan-keo-ttt07",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-trang-tri-2-cua-truot-2-cua-luoi-ttt08",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-trang-tri-phong-cach-tan-co-dien-ttt10",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/ban-trang-diem-venice-go-tu-nhien-ket-hop-guong-btfdct03",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/ban-trang-diem-diel-ket-hop-guong-btfdct04",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/giuong-ngu-go-bddct09-phong-cach-rustic-tone-mau-nau-tram",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-ao-canh-lua-go-cong-nghiep-thiet-ke-thong-minh",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tu-ao-wddct06-canh-mo-mau-trang-chat-lieu-go-sang-trong",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/don-ban-phan-thiet-ke-hinh-oval-voi-2-chan-tru-chac-chan",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/ghe-don-phong-ngu-khung-chan-sat-dem-ngoi-em-ai",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/ban-phan-treo-tuong-tone-mau-trang-thiet-ke-hien-dai",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/don-ban-phan-phong-ngu-hinh-tru-thiet-ke-moi-la",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct09-mau-trang-phong-cach-tan-co",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/giuong-ngu-boc-ni-bddct07",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct08",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/giuong-ngu-go-bddct06",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/giuong-ngu-boc-ni-bdct08",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct05",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct06",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct02",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct03",
+        "https://xuongmocdct.com.vn/noi-that-phong-ngu/tap-dau-giuong-btdct07",
+    ],
+    "noi-that-van-phong": [
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-khung-kim-loai-den-blvxmdct06",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-hinh-chu-l-blvxmdct07",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-phong-cach-hien-dai-blvxmdct08",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-ho-so-cuon-bang-go-co-o-cam-cong-sac-usb-ths05",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-ho-so-di-dong-2-ngan-keo-chat-lieu-go-ths06",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-ho-so-co-khoa-an-toan-3-ngan-mau-trang-ths07",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-ho-so-doc-4-ngan-co-khoa-ths09",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-ho-so-ben-co-2-ngan-keo-mau-go-tu-nhien-ths10",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-da-pu-xoay-360-gvpxmdct09",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-khach-phong-cho-co-dem-tay-da-ght08",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/bo-2-ghe-hoi-truong-lung-luoi-mau-den-ght09",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/combo-2-ghe-hoi-truong-chat-da-co-tay-vin-ght10",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-dung-ho-so-doc-bang-kim-loai-co-khoa-ths01",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-ho-so-2-ngan-keo-mau-trang-ths02",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-ho-so-di-dong-co-2-ngan-keo-ths03",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/tu-ho-so-co-o-cam-cong-sac-usb-3-ngan-keo-ths04",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/bo-5-ghe-hoi-truong-mat-luoi-sang-trong-ght05",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-hoi-truong-de-truot-bang-kim-loai-gia-da-ght01",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-hoi-truong-khung-thep-va-da-pu-ght02",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-hoi-truong-khung-thep-mau-xanh-ght03",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-hoi-truong-bang-da-pu-mau-dem-ght04",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/bo-ghe-hoi-truong-2-nguoi-boc-da-mau-den-ght06",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-hoi-truong-da-boss-khong-tay-mau-den-ght07",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-cao-co-tay-vin-lat-len-gvpxmdct06",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-mau-bac-blvxmdct09",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-cong-thai-hoc-gvpxmdct01",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-lung-luoi-gvpxmdct02",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-xoay-gia-da-mau-den-gvpxmdct08",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-chan-xoay-lung-luoi-gvpxmdct04",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-loai-lon-chiu-luc-500lbs-gvpxmdct05",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-lung-luoi-thoang-khi-gvpxmdct07",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-mau-xam-bac-blvxmdct10",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ghe-van-phong-cong-thai-hoc-mau-hong-gvpxmdct03",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-phong-cach-vintage-blvxmdct05",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-chat-lieu-sang-trong-blvxmdct01",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-may-tinh-bang-go-blvxmdct02",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-go-cong-nghiep-blvxmdct03",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-hinh-chu-l-blvxmdct04",
+        "https://xuongmocdct.com.vn/noi-that-van-phong/ban-lam-viec-nho-xinh-kem-gia-sach",
+    ],
+}
+id_ = {
+    'noi-that-van-phong': 41,
+    'noi-that-phong-bep': 39,
+    'noi-that-phong-khach': 23,
+    'noi-that-phong-ngu': 40  # Đã sửa lỗi chính tả
+}
 
-for product_url in url:
-    imgs = []
-    product_data = crawler.crawl_product(product_url, my_web)
+for slug,urls in url.items():
+    for product_url in urls:
+        imgs = []
+        product_data = crawler.crawl_product(product_url, my_web)
+        print(product_data)
+        if product_data is None:
+            print(f"⚠️ Bỏ qua sản phẩm: {product_url} do không thể lấy dữ liệu!")
+            continue  # Bỏ qua nếu không lấy được thông tin sản phẩm
 
-    if product_data is None:
-        print(f"⚠️ Bỏ qua sản phẩm: {product_url} do không thể lấy dữ liệu!")
-        continue  # Bỏ qua nếu không lấy được thông tin sản phẩm
+        # Xử lý ảnh sản phẩm
+        if product_data["all_imgs"]:
+            for img in product_data["all_imgs"]:
+                if img:
+                    imgs.append({"src": img})
+        else:
+            imgs = None
+        print(imgs)
+        print(id_[slug])
+        # Đăng sản phẩm lên WooCommerce
+        woocomercy.post_product(
+            title=product_data["title"],
+            price=product_data["price"],
+            img_names=imgs,
+            category=[{'id':id_[slug]}],
+            content=product_data["content"],
+        )
 
-    # Xử lý ảnh sản phẩm
-    if product_data["all_imgs"]:
-        for img in product_data["all_imgs"]:
-            if img:
-                imgs.append({"src": f"https://{my_web}/wp-content/uploads/{img}"})
-    else:
-        imgs = None
-
-    # Đăng sản phẩm lên WooCommerce
-    woocomercy.post_product(
-        title=product_data["title"],
-        price=product_data["price"],
-        img_names=imgs,
-        category='',
-        content=product_data["content"],
-    )
-
-    # Tránh bị chặn do gửi quá nhiều request liên tục
-    dem += 1
-    if dem % 30 == 0:
-        print("⏳ Nghỉ 50 giây để tránh bị chặn...")
-        time.sleep(50)
+        # Tránh bị chặn do gửi quá nhiều request liên tục
+        dem += 1
+        if dem % 30 == 0:
+            print("⏳ Nghỉ 50 giây để tránh bị chặn...")
+            time.sleep(50)
